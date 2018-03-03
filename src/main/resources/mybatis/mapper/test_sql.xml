@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.damdev.question.repository.TestRepository">
+  <select id="questionCount" resultType="int">
+    SELECT COUNT(*)
+    FROM damdev.TB_QUESTION
+  </select>
+
+  <select id="getQuestionList" resultType="Question">
+    SELECT q_id        AS id,
+           category_id AS categoryId,
+           u_id        AS questionValue,
+           is_apply    AS isApply
+    FROM   damdev.TB_QUESTION
+  </select>
+
+  <insert id="insertFeature" parameterType="Feature">
+    INSERT
+      INTO damdev.TB_FEATURE
+           (
+              `feature`,
+              `u_id`
+           )
+      VALUES
+           (
+              #{feature},
+              #{questionValue}
+           )
+  </insert>
+</mapper>

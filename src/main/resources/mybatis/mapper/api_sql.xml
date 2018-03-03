@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.damdev.question.repository.ApiRepository">
+  <select id="getSeed" resultType="java.util.HashMap">
+    SELECT    u_id          AS questionValue,
+              category_name AS categoryName
+    FROM      TB_QUESTION tq
+    LEFT JOIN TB_CATEGORY tc
+    ON        tq.category_id = tc.category_id
+    GROUP BY  tq.category_id
+  </select>
+    
+  <select id="selectDocumentImages" parameterType="CategoryType" resultType="DocImages">
+  	SELECT 	u_id			AS id,
+			tp.type_name	AS type
+	FROM	TB_QUESTION	AS q
+	LEFT OUTER JOIN	TB_CATEGORY	AS cg
+	ON cg.category_id = q.category_id
+	LEFT OUTER JOIN TB_TYPE		AS tp
+	ON tp.type_id = q.is_apply
+	WHERE	cg.category_name = #{category}
+	AND	q_id > (
+				SELECT	q_id
+				FROM	TB_QUESTION
+				WHERE	u_id = #{docId}
+				)
+	LIMIT	#{cnt}
+  </select>
+  
+  <select id="selectCategoryHaveChk" parameterType="String" resultType="Integer">
+  	SELECT COUNT(*)
+	FROM TB_CATEGORY
+	WHERE category_name = #{category}
+  </select>
+  
+</mapper>
