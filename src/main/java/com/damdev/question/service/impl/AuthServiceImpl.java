@@ -1,8 +1,6 @@
 package com.damdev.question.service.impl;
 
 import com.damdev.question.common.jwt.JwtUtil;
-import com.damdev.question.domain.CategoryType;
-import com.damdev.question.domain.DocImages;
 import com.damdev.question.domain.Token;
 import com.damdev.question.domain.User;
 import com.damdev.question.repository.AuthRepository;
@@ -10,7 +8,6 @@ import com.damdev.question.service.AuthService;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-
 import javax.servlet.http.HttpServletResponse;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,13 +43,13 @@ public class AuthServiceImpl implements AuthService {
 
 		int ret;
 		if (tokenInfo == null) {
-			// insert
+			// 토큰 새로 입력
 			tokenInfo = new Token();
 			tokenInfo.setUserId(user.getId());
 			tokenInfo.setToken(token);
-
-			ret = authRepository.insertTokenInfo(tokenInfo);
 		} else {
+			// 토큰 추가 입력
+
 			// 시간 확인
 			if (calTime(tokenInfo) > 0) {
 				response.setStatus(403);
@@ -61,10 +58,9 @@ public class AuthServiceImpl implements AuthService {
 				return jsonObj;
 			}
 
-			// update
 			tokenInfo.setToken(token);
-			ret = authRepository.updateTokenInfo(tokenInfo);
 		}
+		ret = authRepository.insertTokenInfo(tokenInfo);
 
 		if (ret > 0) {
 			jsonObj.put("access_token", token);

@@ -11,12 +11,14 @@
   </select>
 
   <select id="getTokenInfo" resultType="Token" parameterType="User">
-    SELECT t_id     AS id,
-           user_id  AS userId,
-           token,
-           reg_date AS regDate
-    FROM   damdev.TB_TOKEN
-    WHERE  user_id = #{id}
+    SELECT   t_id     AS id,
+             user_id  AS userId,
+             token,
+             reg_date AS regDate
+    FROM     damdev.TB_TOKEN
+    WHERE    user_id = #{id}
+    ORDER BY reg_date DESC
+    LIMIT    1
   </select>
 
   <insert id="insertTokenInfo" parameterType="Token">
