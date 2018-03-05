@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import org.springframework.stereotype.Repository;
 
+import com.damdev.question.domain.CateNewReg;
 import com.damdev.question.domain.CategoryType;
 import com.damdev.question.domain.DocImages;
 
@@ -15,5 +16,6 @@ public interface ApiRepository {
 	List<DocImages> selectDocumentImages(CategoryType category);
 	
 	int selectCategoryHaveChk(String category);
-
+	
+	int insertNewRegQuestion(CateNewReg cateNewReg);
 }

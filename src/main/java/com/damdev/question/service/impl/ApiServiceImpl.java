@@ -1,5 +1,6 @@
 package com.damdev.question.service.impl;
 
+import com.damdev.question.domain.CateNewReg;
 import com.damdev.question.domain.CategoryType;
 import com.damdev.question.domain.DocImages;
 import com.damdev.question.repository.ApiRepository;
@@ -7,6 +8,8 @@ import com.damdev.question.service.ApiService;
 import com.damdev.question.service.AuthService;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.json.simple.JSONObject;
@@ -62,6 +65,30 @@ public class ApiServiceImpl implements ApiService {
 		
 		if(imageList.size() < category.getCnt()) {
 			nextUrl += category.getDocId();
+			
+			int newRegCnt = (int)(Math.random()*9000)+1000;
+			int regCnt = 0;
+			
+			System.out.println(newRegCnt+"개 갱신");
+			
+			for(int i=0;i<newRegCnt;i++) {
+				CateNewReg cateNewReg = new CateNewReg();
+				
+				UUID uuid = UUID.randomUUID();
+				String strUID = uuid.toString().replaceAll("-", "").substring(0, 10);
+				int random = (int)(Math.random())*10;
+				int isApply = (random >= 3 && random <=6)?1:2;
+				
+				cateNewReg.setCategoryName(category.getCategory());
+				cateNewReg.setuId(strUID);
+				cateNewReg.setIsApply(isApply);
+				
+				int addCnt = apiRepository.insertNewRegQuestion(cateNewReg);
+				regCnt += addCnt;
+				
+				System.out.println(regCnt+"번째 정보 : "+cateNewReg.toString());
+			}
+			
 		} else {
 			nextUrl += imageList.get(imageList.size()-1).getId();
 			imageList.remove(imageList.size()-1);

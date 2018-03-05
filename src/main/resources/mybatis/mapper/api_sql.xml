@@ -25,6 +25,7 @@
 				SELECT	q_id
 				FROM	TB_QUESTION
 				WHERE	u_id = #{docId}
+				LIMIT	1
 				)
 	LIMIT	#{cnt}
   </select>
@@ -34,5 +35,16 @@
 	FROM TB_CATEGORY
 	WHERE category_name = #{category}
   </select>
+  
+  <insert id="insertNewRegQuestion" parameterType="Question">
+  	INSERT INTO TB_QUESTION(category_id, 
+  							u_id, 
+  							is_apply) 
+  	SELECT 	category_id,
+  			'${uId}',
+  			'${isApply}'
+  	FROM	TB_CATEGORY
+  	WHERE	category_name = #{categoryName}
+  </insert>
   
 </mapper>
