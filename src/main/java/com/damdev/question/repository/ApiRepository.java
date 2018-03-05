@@ -18,4 +18,6 @@ public interface ApiRepository {
 	int selectCategoryHaveChk(String category);
 	
 	int insertNewRegQuestion(CateNewReg cateNewReg);
+	
+	int selectFeatureExtraction(List<String> idList);
 }
