@@ -1,6 +1,5 @@
 package com.damdev.question.controller;
 
-import com.damdev.question.domain.CategoryType;
 import com.damdev.question.service.ApiService;
 
 
@@ -25,17 +24,6 @@ public class ApiController {
 	
 	@GetMapping("/doc/{category}/{docid}")
 	public JSONObject document(HttpServletRequest request, HttpServletResponse response, @PathVariable String category, @PathVariable String docid) {
-		JSONObject result = new JSONObject();
-		
-		int limit = (int)(Math.random()*100)+1;
-		
-		CategoryType cateType = new CategoryType();
-		cateType.setCategory(category);
-		cateType.setCnt(limit);
-		cateType.setDocId(docid);
-		
-		result = apiService.document(response, cateType);
-		
-		return result;
+		return apiService.document(response, category, docid);
 	}
 }

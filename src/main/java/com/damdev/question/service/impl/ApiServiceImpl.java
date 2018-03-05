@@ -47,11 +47,18 @@ public class ApiServiceImpl implements ApiService {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public JSONObject document(HttpServletResponse response, CategoryType category) {
+	public JSONObject document(HttpServletResponse response, String category, String docid) {
 		JSONObject jsonObj = new JSONObject();
 		
-		System.out.println(category.getCategory());
-		int cnt = apiRepository.selectCategoryHaveChk(category.getCategory());
+		int limit = (int)(Math.random()*100)+1;
+		
+		CategoryType cateType = new CategoryType();
+		cateType.setCategory(category);
+		cateType.setCnt(limit);
+		cateType.setDocId(docid);
+		
+		System.out.println(category);
+		int cnt = apiRepository.selectCategoryHaveChk(category);
 
 		if (cnt <= 0) {
 			response.setStatus(400);
@@ -59,12 +66,12 @@ public class ApiServiceImpl implements ApiService {
 			return jsonObj;
 		}
 		
-		List<DocImages> imageList = apiRepository.selectDocumentImages(category);
+		List<DocImages> imageList = apiRepository.selectDocumentImages(cateType);
 		
-		String nextUrl = "/doc/"+category.getCategory()+"/";
+		String nextUrl = "/doc/"+category+"/";
 		
-		if(imageList.size() < category.getCnt()) {
-			nextUrl += category.getDocId();
+		if(imageList.size() < limit) {
+			nextUrl += docid;
 			
 			int newRegCnt = (int)(Math.random()*9000)+1000;
 			int regCnt = 0;
@@ -79,7 +86,7 @@ public class ApiServiceImpl implements ApiService {
 				int random = (int)(Math.random())*10;
 				int isApply = (random >= 3 && random <=6)?1:2;
 				
-				cateNewReg.setCategoryName(category.getCategory());
+				cateNewReg.setCategoryName(category);
 				cateNewReg.setuId(strUID);
 				cateNewReg.setIsApply(isApply);
 				
