@@ -24,5 +24,5 @@ public interface ApiService {
 	 * @param category
 	 * @return
 	 */
-	JSONObject document(HttpServletResponse response, CategoryType category);
+	JSONObject document(HttpServletResponse response, String category, String docId);
 }
