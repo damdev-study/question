@@ -25,6 +25,7 @@
 				SELECT	q_id
 				FROM	TB_QUESTION
 				WHERE	u_id = #{docId}
+				LIMIT	1
 				)
 	LIMIT	#{cnt}
   </select>
