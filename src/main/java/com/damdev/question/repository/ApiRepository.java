@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 import com.damdev.question.domain.CateNewReg;
 import com.damdev.question.domain.CategoryType;
 import com.damdev.question.domain.DocImages;
+import com.damdev.question.domain.FeatureExt;
+import com.damdev.question.domain.ListString;
 
 @Repository
 public interface ApiRepository {
@@ -19,5 +21,5 @@ public interface ApiRepository {
 	
 	int insertNewRegQuestion(CateNewReg cateNewReg);
 	
-	int selectFeatureExtraction(List<String> idList);
+	List<FeatureExt> selectFeatureExtraction(ListString listString);
 }

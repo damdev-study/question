@@ -47,12 +47,12 @@
   	WHERE	category_name = #{categoryName}
   </insert>
   
-  <select id="selectFeatureExtraction" parameterType="Array" resultType="FeatureExt">
+  <select id="selectFeatureExtraction" parameterType="ListString" resultType="FeatureExt">
   	SELECT	u_id	AS image,
   			feature	AS feature
   	FROM	TB_FEATURE
   	WHERE	u_id IN
-  		<foreach item="id" index="index" separator="," open="(" close=")" collection="idList">
+  		<foreach item="id" index="index" separator="," open="(" close=")" collection="listString">
   			#{id}
   		</foreach>
   </select>
