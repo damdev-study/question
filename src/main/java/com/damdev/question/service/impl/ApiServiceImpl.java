@@ -6,6 +6,8 @@ import com.damdev.question.domain.DocImages;
 import com.damdev.question.repository.ApiRepository;
 import com.damdev.question.service.ApiService;
 import com.damdev.question.service.AuthService;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -47,63 +49,90 @@ public class ApiServiceImpl implements ApiService {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public JSONObject document(HttpServletResponse response, String category, String docid) {
+	public JSONObject document(HttpServletRequest request, HttpServletResponse response, String category, String docid) {
 		JSONObject jsonObj = new JSONObject();
 		
-		int limit = (int)(Math.random()*100)+1;
+		String token = request.getHeader("Authorization");
 		
-		CategoryType cateType = new CategoryType();
-		cateType.setCategory(category);
-		cateType.setCnt(limit);
-		cateType.setDocId(docid);
+		if(authService.checkToken(token)) {
 		
-		System.out.println(category);
-		int cnt = apiRepository.selectCategoryHaveChk(category);
-
-		if (cnt <= 0) {
-			response.setStatus(400);
-			jsonObj.put("result_message", "존재하지 않는 카테고리입니다.");
-			return jsonObj;
-		}
-		
-		List<DocImages> imageList = apiRepository.selectDocumentImages(cateType);
-		
-		String nextUrl = "/doc/"+category+"/";
-		
-		if(imageList.size() < limit) {
-			nextUrl += docid;
+			int limit = (int)(Math.random()*100)+1;
 			
-			int newRegCnt = (int)(Math.random()*9000)+1000;
-			int regCnt = 0;
+			CategoryType cateType = new CategoryType();
+			cateType.setCategory(category);
+			cateType.setCnt(limit);
+			cateType.setDocId(docid);
 			
-			System.out.println(newRegCnt+"개 갱신");
-			
-			for(int i=0;i<newRegCnt;i++) {
-				CateNewReg cateNewReg = new CateNewReg();
-				
-				UUID uuid = UUID.randomUUID();
-				String strUID = uuid.toString().replaceAll("-", "").substring(0, 10);
-				int random = (int)(Math.random())*10;
-				int isApply = (random >= 3 && random <=6)?1:2;
-				
-				cateNewReg.setCategoryName(category);
-				cateNewReg.setuId(strUID);
-				cateNewReg.setIsApply(isApply);
-				
-				int addCnt = apiRepository.insertNewRegQuestion(cateNewReg);
-				regCnt += addCnt;
-				
-				System.out.println(regCnt+"번째 정보 : "+cateNewReg.toString());
+			System.out.println(category);
+			int cnt = apiRepository.selectCategoryHaveChk(category);
+	
+			if (cnt <= 0) {
+				response.setStatus(400);
+				jsonObj.put("result_message", "존재하지 않는 카테고리입니다.");
+				return jsonObj;
 			}
 			
-		} else {
-			nextUrl += imageList.get(imageList.size()-1).getId();
-			imageList.remove(imageList.size()-1);
-		}
-		
-		jsonObj.put("next_url", nextUrl);
-		jsonObj.put("images", imageList);
+			List<DocImages> imageList = apiRepository.selectDocumentImages(cateType);
+			
+			String nextUrl = "/doc/"+category+"/";
+			
+			if(imageList.size() < limit) {
+				nextUrl += docid;
+				
+				int newRegCnt = (int)(Math.random()*9000)+1000;
+				int regCnt = 0;
+				
+				System.out.println(newRegCnt+"개 갱신");
+				
+				for(int i=0;i<newRegCnt;i++) {
+					CateNewReg cateNewReg = new CateNewReg();
+					
+					UUID uuid = UUID.randomUUID();
+					String strUID = uuid.toString().replaceAll("-", "").substring(0, 10);
+					int random = (int)(Math.random())*10;
+					int isApply = (random >= 3 && random <=6)?1:2;
+					
+					cateNewReg.setCategoryName(category);
+					cateNewReg.setuId(strUID);
+					cateNewReg.setIsApply(isApply);
+					
+					int addCnt = apiRepository.insertNewRegQuestion(cateNewReg);
+					regCnt += addCnt;
+					
+					System.out.println(regCnt+"번째 정보 : "+cateNewReg.toString());
+				}
+				
+			} else {
+				nextUrl += imageList.get(imageList.size()-1).getId();
+				imageList.remove(imageList.size()-1);
+			}
+			
+			jsonObj.put("next_url", nextUrl);
+			jsonObj.put("images", imageList);
 
+		}
 		return jsonObj;
 	}
+
+	@Override
+	public JSONObject featureExtraction(HttpServletRequest request, HttpServletResponse response, String[] idArr) {
+		JSONObject jsonObj = new JSONObject();
+		
+		String token = request.getHeader("Authorization");
+		
+		if(authService.checkToken(token)) {
+			List<String> idList = new ArrayList<String>();
+			
+			System.out.println(idArr.length+"개 id 요청");
+			for(int i=0;i<idArr.length;i++) {
+				idList.add(idArr[i]);
+				System.out.println();
+			}
+			
+			
+		}
+		
+		return jsonObj;
+	}
+	
 }

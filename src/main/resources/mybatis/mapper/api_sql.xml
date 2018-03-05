@@ -47,4 +47,14 @@
   	WHERE	category_name = #{categoryName}
   </insert>
   
+  <select id="selectFeatureExtraction" parameterType="Array" resultType="FeatureExt">
+  	SELECT	u_id	AS image,
+  			feature	AS feature
+  	FROM	TB_FEATURE
+  	WHERE	u_id IN
+  		<foreach item="id" index="index" separator="," open="(" close=")" collection="idList">
+  			#{id}
+  		</foreach>
+  </select>
+  
 </mapper>
