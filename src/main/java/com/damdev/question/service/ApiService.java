@@ -27,10 +27,21 @@ public interface ApiService {
 	JSONObject document(HttpServletRequest request, HttpServletResponse response, String category, String docId);
 	
 	/**
+	 * Feature Extraction API
+	 * 
 	 * @param request
 	 * @param response
 	 * @param idArr
 	 * @return
 	 */
 	JSONObject featureExtraction(HttpServletRequest request, HttpServletResponse response, String[] idArr);
+	
+	/**
+	 * Feature Save API
+	 * 
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	JSONObject featureSave(HttpServletRequest request, HttpServletResponse response);
 }

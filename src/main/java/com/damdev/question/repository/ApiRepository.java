@@ -9,6 +9,7 @@ import com.damdev.question.domain.CategoryType;
 import com.damdev.question.domain.DocImages;
 import com.damdev.question.domain.FeatureExt;
 import com.damdev.question.domain.ListString;
+import com.damdev.question.domain.SaveFeature;
 
 @Repository
 public interface ApiRepository {
@@ -22,4 +23,8 @@ public interface ApiRepository {
 	int insertNewRegQuestion(CateNewReg cateNewReg);
 	
 	List<FeatureExt> selectFeatureExtraction(ListString listString);
+	
+	int insertFeatureSave(SaveFeature data);
+	
+	int selectTokenId(String token);
 }

@@ -57,4 +57,20 @@
   		</foreach>
   </select>
   
+  <insert id="insertFeatureSave" parameterType="SaveFeature">
+  	INSERT INTO TB_RESULT(u_id, 
+  						  t_id, 
+  						  feature) 
+  				VALUES(#{uId}, 
+  					   #{tokenId},
+  					   #{feature})
+  </insert>
+  
+  <select id="selectTokenId" parameterType="String" resultType="Integer">
+  	SELECT 	t_id
+  	FROM	TB_TOKEN
+  	WHERE	token = #{token}
+  	LIMIT	1
+  </select>
+  
 </mapper>

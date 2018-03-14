@@ -124,19 +124,37 @@ public class ApiServiceImpl implements ApiService {
 		String token = request.getHeader("Authorization");
 		
 		if(authService.checkToken(token)) {
-			List<String> idList = new ArrayList<String>();
 			
-			System.out.println(idArr.length+"개 id 요청");
-			for(int i=0;i<idArr.length;i++) {
-				System.out.println(idArr[i]);
-				idList.add(idArr[i]);
+			if(idArr != null && idArr.length > 0) {
+				List<String> idList = new ArrayList<String>();
+				
+				System.out.println(idArr.length+"개 id 요청");
+				for(int i=0;i<idArr.length;i++) {
+					System.out.println(idArr[i]);
+					idList.add(idArr[i]);
+				}
+				
+				ListString listString = new ListString();
+				listString.setListString(idList);
+				List<FeatureExt> features = apiRepository.selectFeatureExtraction(listString);
+				
+				jsonObj.put("features", features);
 			}
+		}
+		
+		return jsonObj;
+	}
+
+	@Override
+	public JSONObject featureSave(HttpServletRequest request, HttpServletResponse response) {
+		JSONObject jsonObj = new JSONObject();
+		
+		String token = request.getHeader("Authorization");
+		
+		if(authService.checkToken(token)) {
+			int tokenId = apiRepository.selectTokenId(token);
 			
-			ListString listString = new ListString();
-			listString.setListString(idList);
-			List<FeatureExt> features = apiRepository.selectFeatureExtraction(listString);
 			
-			jsonObj.put("features", features);
 		}
 		
 		return jsonObj;
