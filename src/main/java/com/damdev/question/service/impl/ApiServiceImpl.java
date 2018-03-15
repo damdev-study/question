@@ -3,6 +3,8 @@ package com.damdev.question.service.impl;
 import com.damdev.question.domain.CateNewReg;
 import com.damdev.question.domain.CategoryType;
 import com.damdev.question.domain.DocImages;
+import com.damdev.question.domain.FeatureExt;
+import com.damdev.question.domain.ListString;
 import com.damdev.question.repository.ApiRepository;
 import com.damdev.question.service.ApiService;
 import com.damdev.question.service.AuthService;
@@ -114,6 +116,7 @@ public class ApiServiceImpl implements ApiService {
 		return jsonObj;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public JSONObject featureExtraction(HttpServletRequest request, HttpServletResponse response, String[] idArr) {
 		JSONObject jsonObj = new JSONObject();
@@ -125,11 +128,15 @@ public class ApiServiceImpl implements ApiService {
 			
 			System.out.println(idArr.length+"개 id 요청");
 			for(int i=0;i<idArr.length;i++) {
+				System.out.println(idArr[i]);
 				idList.add(idArr[i]);
-				System.out.println();
 			}
 			
+			ListString listString = new ListString();
+			listString.setListString(idList);
+			List<FeatureExt> features = apiRepository.selectFeatureExtraction(listString);
 			
+			jsonObj.put("features", features);
 		}
 		
 		return jsonObj;

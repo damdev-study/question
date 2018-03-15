@@ -31,7 +31,10 @@ public class ApiController {
 	}
 	
 	@GetMapping("/image/feature")
-	public JSONObject featureExtraction(HttpServletRequest request, HttpServletResponse response, @Param(value = "id") String[] idArr) {
-		return null;
+	public JSONObject featureExtraction(HttpServletRequest request, HttpServletResponse response, @Param(value = "id") String[] id) {
+		for(int i=0;i<id.length;i++) {
+			System.out.println(id[i]);
+		}
+		return apiService.featureExtraction(request, response, id);
 	}
 }
