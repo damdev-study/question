@@ -60,10 +60,12 @@
   <insert id="insertFeatureSave" parameterType="SaveFeature">
   	INSERT INTO TB_RESULT(u_id, 
   						  t_id, 
-  						  feature) 
+  						  feature,
+  						  is_apply) 
   				VALUES(#{uId}, 
   					   #{tokenId},
-  					   #{feature})
+  					   #{feature},
+  					   1)
   </insert>
   
   <select id="selectTokenId" parameterType="String" resultType="Integer">

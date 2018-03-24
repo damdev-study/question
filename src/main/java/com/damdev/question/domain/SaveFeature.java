@@ -1,23 +1,28 @@
 package com.damdev.question.domain;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 public class SaveFeature {
-	private String uId;
-	private String tokenId;
+	@JsonView
+	private String id;
+	@JsonView	
+	private int tokenId;
+	@JsonView
 	private String feature;
 	
-	public String getuId() {
-		return uId;
+	public String getId() {
+		return id;
 	}
 
-	public void setuId(String uId) {
-		this.uId = uId;
+	public void setId(String id) {
+		this.id = id;
 	}
 
-	public String getTokenId() {
+	public int getTokenId() {
 		return tokenId;
 	}
 
-	public void setTokenId(String tokenId) {
+	public void setTokenId(int tokenId) {
 		this.tokenId = tokenId;
 	}
 
@@ -31,7 +36,7 @@ public class SaveFeature {
 
 	@Override
 	public String toString() {
-		return "SaveFeature [uId=" + uId + ", tokenId=" + tokenId + ", feature=" + feature + "]";
+		return "SaveFeature [id=" + id + ", tokenId=" + tokenId + ", feature=" + feature + "]";
 	}
 	
 }

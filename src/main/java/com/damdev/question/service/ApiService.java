@@ -2,9 +2,10 @@ package com.damdev.question.service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.json.simple.JSONObject;
 
-import com.damdev.question.domain.CategoryType;
+import com.damdev.question.domain.SaveList;
 
 public interface ApiService {
 
@@ -43,5 +44,6 @@ public interface ApiService {
 	 * @param response
 	 * @return
 	 */
-	JSONObject featureSave(HttpServletRequest request, HttpServletResponse response);
+	JSONObject featureSave(HttpServletRequest request, HttpServletResponse response, SaveList dataList);
+
 }
