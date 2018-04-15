@@ -152,7 +152,8 @@ public class ApiServiceImpl implements ApiService {
 	public JSONObject featureSave(HttpServletRequest request, HttpServletResponse response, SaveList dataList) {
 		JSONObject jsonObj = new JSONObject();
 		
-		String token = request.getHeader("Authorization");
+		String token = request.getHeader("Authorization").replace("Bearer ", "");
+		System.out.println(token);
 		
 		if(authService.checkToken(token)) {
 			int tokenId = apiRepository.selectTokenId(token);

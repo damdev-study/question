@@ -39,8 +39,8 @@ public class ApiController {
 	}
 	
 	@PostMapping(value = "/image/feature", produces = "application/json")
-	public JSONObject featureSave(HttpServletRequest request, HttpServletResponse response, @RequestBody SaveList dataList) {
-		return apiService.featureSave(request, response, dataList);
+	public JSONObject featureSave(HttpServletRequest request, HttpServletResponse response, @RequestBody SaveList data) {
+		return apiService.featureSave(request, response, data);
 	}
 	
 	@PostMapping(value = "/image/test")
