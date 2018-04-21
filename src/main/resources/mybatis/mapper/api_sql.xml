@@ -62,7 +62,7 @@
   						  t_id, 
   						  feature,
   						  is_apply) 
-  				VALUES(#{uId}, 
+  				VALUES(#{id}, 
   					   #{tokenId},
   					   #{feature},
   					   1)
