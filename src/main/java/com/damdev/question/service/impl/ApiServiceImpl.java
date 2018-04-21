@@ -1,14 +1,5 @@
 package com.damdev.question.service.impl;
 
-import com.damdev.question.domain.CateNewReg;
-import com.damdev.question.domain.CategoryType;
-import com.damdev.question.domain.DocImages;
-import com.damdev.question.domain.FeatureExt;
-import com.damdev.question.domain.ListString;
-import com.damdev.question.repository.ApiRepository;
-import com.damdev.question.service.ApiService;
-import com.damdev.question.service.AuthService;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -16,9 +7,21 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.damdev.question.domain.CateNewReg;
+import com.damdev.question.domain.CategoryType;
+import com.damdev.question.domain.DocImages;
+import com.damdev.question.domain.FeatureExt;
+import com.damdev.question.domain.ListString;
+import com.damdev.question.domain.SaveFeature;
+import com.damdev.question.domain.SaveList;
+import com.damdev.question.repository.ApiRepository;
+import com.damdev.question.service.ApiService;
+import com.damdev.question.service.AuthService;
 
 @Service("ApiService")
 public class ApiServiceImpl implements ApiService {
@@ -124,19 +127,53 @@ public class ApiServiceImpl implements ApiService {
 		String token = request.getHeader("Authorization");
 		
 		if(authService.checkToken(token)) {
-			List<String> idList = new ArrayList<String>();
 			
-			System.out.println(idArr.length+"개 id 요청");
-			for(int i=0;i<idArr.length;i++) {
-				System.out.println(idArr[i]);
-				idList.add(idArr[i]);
+			if(idArr != null && idArr.length > 0) {
+				List<String> idList = new ArrayList<String>();
+				
+				System.out.println(idArr.length+"개 id 요청");
+				for(int i=0;i<idArr.length;i++) {
+					System.out.println(idArr[i]);
+					idList.add(idArr[i]);
+				}
+				
+				ListString listString = new ListString();
+				listString.setListString(idList);
+				List<FeatureExt> features = apiRepository.selectFeatureExtraction(listString);
+				
+				jsonObj.put("features", features);
+			}
+		}
+		
+		return jsonObj;
+	}
+
+	@Override
+	public JSONObject featureSave(HttpServletRequest request, HttpServletResponse response, SaveList dataList) {
+		JSONObject jsonObj = new JSONObject();
+		
+		String token = request.getHeader("Authorization").replace("Bearer ", "");
+		System.out.println(token);
+		
+		if(authService.checkToken(token)) {
+			int tokenId = apiRepository.selectTokenId(token);
+			
+			List<SaveFeature> data = dataList.getData();
+			
+			int listSize = data.size();
+			
+			if(listSize > 50) {
+				listSize = 50;
 			}
 			
-			ListString listString = new ListString();
-			listString.setListString(idList);
-			List<FeatureExt> features = apiRepository.selectFeatureExtraction(listString);
+			int returnCode = 0;
+			for(int i=0;i<listSize;i++) {
+				data.get(i).setTokenId(tokenId);
+				System.out.println(data.get(i));
+				returnCode += apiRepository.insertFeatureSave(data.get(i));
+			}
 			
-			jsonObj.put("features", features);
+			System.out.println("처리갯수 : "+returnCode);
 		}
 		
 		return jsonObj;
