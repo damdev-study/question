@@ -3,7 +3,20 @@
 <configuration>
 
   <typeAliases>
-    <package name="com.damdev.question.domain"/>
+    <typeAlias type="com.damdev.question.domain.CategoryType"/>
+    <typeAlias type="com.damdev.question.domain.CateListDomain"/>
+    <typeAlias type="com.damdev.question.domain.CateNewReg"/>
+    <typeAlias type="com.damdev.question.domain.DeleteFeature"/>
+    <typeAlias type="com.damdev.question.domain.DeleteList"/>
+    <typeAlias type="com.damdev.question.domain.DocImages"/>
+    <typeAlias type="com.damdev.question.domain.Feature"/>
+    <typeAlias type="com.damdev.question.domain.FeatureExt"/>
+    <typeAlias type="com.damdev.question.domain.ListString"/>
+    <typeAlias type="com.damdev.question.domain.Question"/>
+    <typeAlias type="com.damdev.question.domain.SaveFeature"/>
+    <typeAlias type="com.damdev.question.domain.SaveList"/>
+    <typeAlias type="com.damdev.question.domain.Token"/>
+    <typeAlias type="com.damdev.question.domain.User"/>
   </typeAliases>
-  
+
 </configuration>
