@@ -11,7 +11,7 @@
     ON        tq.category_id = tc.category_id
     GROUP BY  tq.category_id
   </select>
-    
+
   <select id="selectDocumentImages" parameterType="CategoryType" resultType="DocImages">
   	SELECT 	u_id			AS id,
 			tp.type_name	AS type
@@ -29,13 +29,13 @@
 				)
 	LIMIT	#{cnt}
   </select>
-  
+
   <select id="selectCategoryHaveChk" parameterType="String" resultType="Integer">
   	SELECT COUNT(*)
 	FROM TB_CATEGORY
 	WHERE category_name = #{category}
   </select>
-  
+
   <insert id="insertNewRegQuestion" parameterType="Question">
   	INSERT INTO TB_QUESTION(category_id, 
   							u_id, 
@@ -46,17 +46,17 @@
   	FROM	TB_CATEGORY
   	WHERE	category_name = #{categoryName}
   </insert>
-  
+
   <select id="selectFeatureExtraction" parameterType="ListString" resultType="FeatureExt">
-  	SELECT	u_id	AS image,
-  			feature	AS feature
-  	FROM	TB_FEATURE
-  	WHERE	u_id IN
-  		<foreach item="id" index="index" separator="," open="(" close=")" collection="listString">
-  			#{id}
-  		</foreach>
+    SELECT u_id AS image,
+    feature AS feature
+    FROM TB_FEATURE
+    WHERE u_id IN
+    <foreach item="id" index="index" separator="," open="(" close=")" collection="listString">
+      #{id}
+    </foreach>
   </select>
-  
+
   <insert id="insertFeatureSave" parameterType="SaveFeature">
   	INSERT INTO TB_RESULT(u_id, 
   						  t_id, 
@@ -67,12 +67,17 @@
   					   #{feature},
   					   1)
   </insert>
-  
+
   <select id="selectTokenId" parameterType="String" resultType="Integer">
   	SELECT 	t_id
   	FROM	TB_TOKEN
   	WHERE	token = #{token}
   	LIMIT	1
   </select>
-  
+
+  <delete id="deleteFeature" parameterType="String">
+    DELETE FROM TB_RESULT
+    WHERE u_id = #{id}
+  </delete>
+
 </mapper>
