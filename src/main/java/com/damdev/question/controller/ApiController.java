@@ -55,4 +55,9 @@ public class ApiController {
   public void testeSave(HttpServletRequest request, HttpServletResponse response, @RequestBody SaveFeature[] data) {
     System.out.println(data.toString());
   }
+
+  @GetMapping(value = "/result")
+  public JSONObject result() {
+    return apiService.result();
+  }
 }

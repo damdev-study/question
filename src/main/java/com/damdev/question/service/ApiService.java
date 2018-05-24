@@ -30,4 +30,9 @@ public interface ApiService {
 
   JSONObject deleteFeature(HttpServletRequest request, HttpServletResponse response, DeleteList data);
 
+  /**
+   * 결과 확인 API
+   */
+  JSONObject result();
+
 }

@@ -28,4 +28,29 @@ public interface ApiRepository {
   int selectTokenId(String token);
 
   int deleteFeature(String id);
+
+  // 유저 리스트
+  List<Map<String, String>> getUserList();
+
+  // 유저의 토큰 리스트
+  List<Map<String, String>> getUserTokenList(String id);
+
+  // 정상 저장된 이미지 수
+  int getRightDataCnt(String id);
+
+  // 저장되지 않고 누락된 이미지 수
+  int getMissDataCnt(String id);
+
+  // 삭제되지 않고 남아있는 이미지 수
+  int getNotDeletedCnt(String id);
+
+  // 총 쿼리량
+  int getTotalCnt(String id);
+
+  // 입력해야할 데이터
+  List<String> getInsertTotalData();
+
+  // 유저가 입력한 데이터
+  List<String> getInsertedData(String id);
+
 }
