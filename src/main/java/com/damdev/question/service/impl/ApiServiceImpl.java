@@ -12,11 +12,13 @@ import com.damdev.question.repository.ApiRepository;
 import com.damdev.question.service.ApiService;
 import com.damdev.question.service.AuthService;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -200,6 +202,69 @@ public class ApiServiceImpl implements ApiService {
     }
 
     return jsonObj;
+  }
+
+  @Override
+  public JSONObject result() {
+    JSONObject jsonObj = new JSONObject();
+    JSONArray jsonArray = new JSONArray();
+
+    List<Map<String, String>> list = apiRepository.getUserList();
+    int size = list.size();
+
+    for (int i = 0; i < size; i++) {
+
+      Map<String, Object> map = new HashMap<>();
+
+      String id = String.valueOf(list.get(i).get("user_id"));
+      String name = list.get(i).get("user_name");
+
+      int E = apiRepository.getTotalCnt(id); // 총 쿼리량
+
+      double score = Math.max(0, maxScore(id)) + 512 - 0.01 * E;
+
+      map.put("userId", id);
+      map.put("userName", name);
+      map.put("score", score);
+
+      jsonArray.add(map);
+    }
+
+    jsonObj.put("result", jsonArray);
+
+    return jsonObj;
+  }
+
+  public double maxScore(String u_id) {
+
+    int A; // 정상 저장된 이미지 수
+    int B; // 저장되지 않고 누락된 이미지 수
+    int C; // 삭제되지 않고 남아있는 이미지 수
+    int D; // 잘못된 데이터 수
+
+    double max = 0;
+
+    List<Map<String, String>> list = apiRepository.getUserTokenList(u_id);
+    int size = list.size();
+
+    List<String> totalList = apiRepository.getInsertTotalData();
+    for (int i = 0; i < size; i++) {
+      String t_id = String.valueOf(list.get(i).get("t_id"));
+      A = apiRepository.getRightDataCnt(t_id);
+
+      // 입력해야할 전체 데이터에서 실제로 입력된 데이터를 빼서 남아있는 데이터 수 체크
+      List<String> tempList;
+      tempList = totalList;
+      List<String> insertedList = apiRepository.getInsertedData(t_id);
+      tempList.removeAll(insertedList);
+      B = tempList.size();
+
+      C = apiRepository.getNotDeletedCnt(t_id);
+      D = B + C;
+      max = Math.max(max, 1.0 * A - 0.8 * B - 1.2 * C - 3.0 * D);
+    }
+
+    return max;
   }
 
 }

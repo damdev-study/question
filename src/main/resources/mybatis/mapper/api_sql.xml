@@ -80,4 +80,61 @@
     WHERE u_id = #{id}
   </delete>
 
+  <select id="getUserList" resultType="java.util.HashMap">
+    SELECT 		tu.user_id,
+    					tu.user_name
+    FROM 			TB_USER tu
+  </select>
+
+  <select id="getUserTokenList" parameterType="String" resultType="java.util.HashMap">
+		SELECT 		tt.t_id
+		FROM 	 		TB_TOKEN tt
+		LEFT JOIN TB_RESULT tr
+		ON  	 		tt.t_id = tr.t_id
+		WHERE  		tt.user_id = #{id}
+		AND 			tr.r_id IS NOT NULL
+	</select>
+
+  <select id="getRightDataCnt" parameterType="String" resultType="Integer">
+		SELECT 		COUNT(*)
+		FROM 	 		TB_RESULT tr
+		LEFT JOIN TB_QUESTION tq
+		ON 				tr.u_id = tq.u_id
+		WHERE  		tr.t_id = #{id}
+		AND 			tq.is_apply = 1
+	</select>
+
+  <select id="getMissDataCnt" parameterType="String" resultType="Integer">
+		SELECT 0
+  </select>
+
+  <select id="getNotDeletedCnt" parameterType="String" resultType="Integer">
+		SELECT 		COUNT(*)
+		FROM 	 		TB_RESULT tr
+		LEFT JOIN TB_QUESTION tq
+		ON 				tr.u_id = tq.u_id
+		WHERE  		tr.t_id = #{id}
+		AND 			tq.is_apply = 2
+  </select>
+
+  <select id="getTotalCnt" parameterType="String" resultType="Integer">
+		SELECT 		COUNT(*)
+		FROM	 		TB_RESULT tr
+		LEFT JOIN TB_TOKEN tt
+		ON 				tr.t_id = tt.t_id
+		WHERE	 		tt.user_id = #{id}
+	</select>
+
+  <select id="getInsertTotalData" resultType="String">
+		SELECT tq.u_id
+		FROM 	 TB_QUESTION tq
+		WHERE  tq.is_apply = 1
+	</select>
+
+  <select id="getInsertedData" parameterType="String" resultType="String">
+		SELECT tr.u_id
+		FROM TB_RESULT tr
+		WHERE tr.t_id = #{id}
+	</select>
+
 </mapper>
